@@ -5,7 +5,7 @@ import {
   OnGatewayDisconnect,
 } from '@nestjs/websockets';
 
-@NestWSG(3001)
+@NestWSG(4100)
 export class WebSocketGateway
   implements OnGatewayConnection, OnGatewayDisconnect
 {
