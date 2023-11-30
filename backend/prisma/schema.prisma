@@ -14,7 +14,8 @@ model User {
   displayname String
   password    String
   messages    Message[]
-  @map("users")
+
+  @@map(name: "users")
 }
 
 model Message {
