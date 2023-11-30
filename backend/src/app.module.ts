@@ -9,11 +9,26 @@
 // })
 // export class AppModule {}
 
+// import { Module } from '@nestjs/common';
+// // import { PrismaService } from './prisma.service';
+// import { AppGateway } from './app.controller';
+
+// @Module({
+//   // providers: [PrismaService],
+//   // exports: [PrismaService],
+//   providers: [AppGateway],
+//   controllers: [],
+// })
+// export class AppModule {}
+
 import { Module } from '@nestjs/common';
-import { PrismaService } from './prisma.service';
+import { HelloModule } from './hello/hello.module';
+import { WebSocketGateway } from './websocket/websocket.gateway';
+import { AppController } from './app.controller';
 
 @Module({
-  providers: [PrismaService],
-  exports: [PrismaService],
+  imports: [HelloModule],
+  controllers: [AppController],
+  providers: [WebSocketGateway],
 })
-export class PrismaModule {}
+export class AppModule {}

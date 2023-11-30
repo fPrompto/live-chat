@@ -1,12 +1,12 @@
 -- CreateTable
-CREATE TABLE "User" (
+CREATE TABLE "users" (
     "id" SERIAL NOT NULL,
     "email" TEXT NOT NULL,
     "username" TEXT NOT NULL,
     "displayname" TEXT NOT NULL,
     "password" TEXT NOT NULL,
 
-    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -20,10 +20,10 @@ CREATE TABLE "Message" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
+CREATE UNIQUE INDEX "users_username_key" ON "users"("username");
 
 -- AddForeignKey
-ALTER TABLE "Message" ADD CONSTRAINT "Message_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Message" ADD CONSTRAINT "Message_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

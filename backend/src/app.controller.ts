@@ -1,32 +1,29 @@
-// import { Controller, Get } from '@nestjs/common';
-// import { AppService } from './app.service';
+// import {
+//   WebSocketGateway,
+//   WebSocketServer,
+//   OnGatewayConnection,
+//   OnGatewayDisconnect,
+// } from '@nestjs/websockets';
 
-// @Controller()
-// export class AppController {
-//   constructor(private readonly appService: AppService) {}
+// @WebSocketGateway(3001) // Porta para WebSocket
+// export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
+//   @WebSocketServer() server;
 
-//   @Get()
-//   getHello(): string {
-//     return this.appService.getHello();
+//   handleConnection(client) {
+//     console.log(`Cliente conectado: ${client.id}`);
+//   }
+
+//   handleDisconnect(client) {
+//     console.log(`Cliente desconectado: ${client.id}`);
 //   }
 // }
 
-import {
-  WebSocketGateway,
-  WebSocketServer,
-  OnGatewayConnection,
-  OnGatewayDisconnect,
-} from '@nestjs/websockets';
+import { Controller, Get } from '@nestjs/common';
 
-@WebSocketGateway(3001) // Porta para WebSocket
-export class AppGateway implements OnGatewayConnection, OnGatewayDisconnect {
-  @WebSocketServer() server;
-
-  handleConnection(client) {
-    console.log(`Cliente conectado: ${client.id}`);
-  }
-
-  handleDisconnect(client) {
-    console.log(`Cliente desconectado: ${client.id}`);
+@Controller()
+export class AppController {
+  @Get()
+  getHello(): string {
+    return 'Hello World!';
   }
 }
