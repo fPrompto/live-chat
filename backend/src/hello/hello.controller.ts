@@ -7,7 +7,6 @@ export class HelloController {
 
   @Get()
   getHello(): string {
-    // Envia uma mensagem para todos os usuários conectados
     this.websocketGateway.sendMessageToClients('Hello from WebSocket!');
     return 'Hello World!';
   }
