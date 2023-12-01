@@ -2,13 +2,18 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserI } from '../interfaces/CreateUserI';
 
-@Controller('user/create')
+@Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
+  @Post('create')
   async createUser(@Body() createUserI: CreateUserI) {
     console.log('create user controller', createUserI);
     return this.userService.createUser(createUserI);
+  }
+
+  @Post('login')
+  async login(@Body() loginData: { emailUser: string; password: string }) {
+    return this.userService.login(loginData);
   }
 }

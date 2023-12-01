@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { CreateUserI } from '../interfaces/CreateUserI';
-import { hashPassword } from '../utils/hashPassword';
+import { hashPassword, comparePassword } from '../utils/hashPassword';
 
 @Injectable()
 export class UserService {
@@ -26,5 +26,40 @@ export class UserService {
     console.log('user without password', userWithoutPassword);
     console.log('password', password);
     return userWithoutPassword;
+  }
+
+  async login(loginData: { emailUser: string; password: string }) {
+    const validateEmail = (email: string) => {
+      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return regex.test(email);
+    };
+
+    const isEmail = validateEmail(loginData.emailUser);
+
+    const user = await this.prismaService.prisma.user.findUnique({
+      where: isEmail
+        ? { email: loginData.emailUser }
+        : { username: loginData.emailUser },
+    });
+
+    if (!user) {
+      return {
+        value: false,
+        message: 'Usuário não encontrado',
+      };
+    }
+
+    const checkPassword = comparePassword(loginData.password, user.password);
+
+    if (!checkPassword) {
+      return {
+        value: false,
+        message: 'Senha incorreta!',
+      };
+    }
+    return {
+      value: true,
+      message: 'Login correto!',
+    };
   }
 }
