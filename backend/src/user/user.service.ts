@@ -62,4 +62,40 @@ export class UserService {
       message: 'Login correto!',
     };
   }
+
+  async verifyEmail(email: string) {
+    const validateEmail = (email: string) => {
+
+      console.log('email', email);
+      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return regex.test(email);
+    };
+
+    const isEmail = validateEmail(email);
+
+    console.log('isemail', isEmail);
+
+    if (!isEmail) {
+      return {
+        value: false,
+        message: 'Email inválido',
+      };
+    }
+
+    const user = await this.prismaService.prisma.user.findUnique({
+      where: { email: email },
+    });
+
+    if (!user) {
+      return {
+        value: true,
+        message: 'Email disponível para uso',
+      };
+    }
+
+    return {
+      value: false,
+      message: 'Email em uso, por favor use outro',
+    };
+  }
 }
