@@ -65,15 +65,11 @@ export class UserService {
 
   async verifyEmail(email: string) {
     const validateEmail = (email: string) => {
-
-      console.log('email', email);
       const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return regex.test(email);
     };
 
     const isEmail = validateEmail(email);
-
-    console.log('isemail', isEmail);
 
     if (!isEmail) {
       return {
@@ -96,6 +92,24 @@ export class UserService {
     return {
       value: false,
       message: 'Email em uso, por favor use outro',
+    };
+  }
+
+  async verifyUser(username: string) {
+    const user = await this.prismaService.prisma.user.findUnique({
+      where: { username: username },
+    });
+
+    if (!user) {
+      return {
+        value: true,
+        message: 'Usuário disponível para uso',
+      };
+    }
+
+    return {
+      value: false,
+      message: 'Usuário em uso, por favor use outro',
     };
   }
 }

@@ -21,4 +21,9 @@ export class UserController {
   async verifyEmail(@Body() data: { email: string }) {
     return this.userService.verifyEmail(data.email);
   }
+
+  @Post('verify/user')
+  async verifyUser(@Body() data: { username: string }) {
+    return this.userService.verifyUser(data.username);
+  }
 }
