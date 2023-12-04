@@ -1,10 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import io, { Socket } from 'socket.io-client';
 
 import ChatInput from '../components/ChatInput';
 import ChatMessages from '../components/ChatMessages';
+import ChatContext from '@/context/ChatContext';
 
 function Chat() {
+  const { userData } = useContext(ChatContext);
+
   const [socket, setSocket] = useState<Socket>();
   const [messages, setMessages] = useState<string[]>([]);
 
@@ -27,6 +30,11 @@ function Chat() {
       socket?.off('message', messageListener);
     };
   }, [messageListener]);
+
+  useEffect(() => {
+    console.log('username:', userData.username);
+    console.log('Name:', userData.displayname);
+  }, [])
 
   return (
     <div>

@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, useState } from 'react';
-import { ProviderI } from '@/interfaces/ProviderI';
+import ProviderI from '@/interfaces/ProviderI';
 import ChatContext, { DEFAULT_VALUE } from './ChatContext';
 
 const ChatProvider: React.FC<PropsWithChildren<ProviderI>> = ({ children }) => {
