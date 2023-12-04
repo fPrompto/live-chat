@@ -4,29 +4,27 @@ import { useRouter } from 'next/navigation';
 import validadeNewAccount from '@/utils/validateNewAccount';
 import LoginInput from '@/components/LoginInput';
 import ChatContext from '@/context/ChatContext';
+import {
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
+  Input,
+  Button,
+} from '@chakra-ui/react';
 
 function Login() {
   const { setUserData } = useContext(ChatContext);
 
   const [emailUser, setEmailUser] = useState('');
   const [password, setPassword] = useState('');
-  
+
   const [newEmail, setNewEmail] = useState('');
   const [newUser, setNewUser] = useState('');
   const [newDisplayname, setNewDisplayname] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  
+
   const { push } = useRouter();
-  
-  useEffect(() => {
-    console.log('---------- LOGIN PAGE ----------');
-    console.log('email / user:', emailUser);
-    console.log('password:', password);
-    console.log('new user:', newUser);
-    console.log('new email:', newEmail);
-    console.log('new password:', newPassword);
-    console.log('--------------------------------');
-  });
 
   const postAxios = async (path: string, data: object): Promise<any> => {
     const url = `http://localhost:4000/user/${path}`;
@@ -54,12 +52,10 @@ function Login() {
     }
 
     // recurso provisorio para testes
-    setUserData(
-      {
-        username: response.message.username,
-        displayname: response.message.displayname,
-      }
-    );
+    setUserData({
+      username: response.message.username,
+      displayname: response.message.displayname,
+    });
     // recurso provisório
     return push('/chat');
   };
@@ -85,39 +81,71 @@ function Login() {
     console.log('response:', response);
   };
 
+  let loginError = false;
+  let registerError = false;
+
   return (
     <>
-      <div>Tela de Login</div>
-      <span>Entrar</span>
-      <br />
       <LoginInput
-        placeholder='Insira seu Email ou Usuário'
-        setLoginValue={setEmailUser}
+        label='Email ou Usuário'
+        errorValue={loginError}
+        errorMessage='Email ou Usuário necessário'
+        value={emailUser}
+        setValue={setEmailUser}
+        inputType='email'
       />
-      <br />
-      <LoginInput placeholder='Insira sua Senha' setLoginValue={setPassword} />
-      <br />
-      <button onClick={() => login()}>Entrar</button>
+
+      <LoginInput
+        label='Senha'
+        errorValue={loginError}
+        errorMessage='Senha necessária'
+        value={password}
+        setValue={setPassword}
+        inputType='password'
+      />
+      <Button colorScheme='teal' onClick={() => login()}>
+        Entrar
+      </Button>
 
       <br />
       <br />
       <span>Cadastrar</span>
       <br />
-      <LoginInput placeholder='Insira seu Usuário' setLoginValue={setNewUser} />
-      <br />
-      <LoginInput placeholder='Insira seu Email' setLoginValue={setNewEmail} />
-      <br />
       <LoginInput
-        placeholder='Insira seu Nome'
-        setLoginValue={setNewDisplayname}
+        label='Usuário'
+        errorValue={registerError}
+        errorMessage='Usuário necessário'
+        value={newUser}
+        setValue={setNewUser}
+        inputType='email'
       />
-      <br />
       <LoginInput
-        placeholder='Insira sua Senha'
-        setLoginValue={setNewPassword}
+        label='Email'
+        errorValue={registerError}
+        errorMessage='Email necessário'
+        value={newEmail}
+        setValue={setNewEmail}
+        inputType='email'
       />
-      <br />
-      <button onClick={() => createNewUser()}>Cadastrar</button>
+      <LoginInput
+        label='Nome'
+        errorValue={registerError}
+        errorMessage='Nome necessário'
+        value={newDisplayname}
+        setValue={setNewDisplayname}
+        inputType='email'
+      />
+      <LoginInput
+        label='Senha'
+        errorValue={registerError}
+        errorMessage='Senha necessária'
+        value={newPassword}
+        setValue={setNewPassword}
+        inputType='password'
+      />
+      <Button colorScheme='teal' onClick={() => createNewUser()}>
+        Cadastrar
+      </Button>
     </>
   );
 }
