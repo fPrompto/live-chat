@@ -1,22 +1,42 @@
 import { useState } from 'react';
+import {
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
+  Input,
+  Button,
+} from '@chakra-ui/react';
 
 function LoginInput({
-  placeholder,
-  setLoginValue,
+  label,
+  errorValue,
+  errorMessage,
+  value,
+  setValue,
+  inputType,
 }: {
-  placeholder: string;
-  setLoginValue: any;
+    label: string;
+    errorValue: boolean;
+    errorMessage: string;
+    value: string;
+    setValue: any;
+    inputType: string;
 }) {
-  const [value, setValue] = useState('');
   return (
-    <input
-      onChange={(e) => {
-        setValue(e.target.value);
-        setLoginValue(e.target.value);
-      }}
-      placeholder={placeholder}
-      value={value}
-    />
+    <FormControl isInvalid={errorValue}>
+      <FormLabel>{label}</FormLabel>
+      <Input
+        type={inputType}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+      {!errorValue ? (
+        <FormHelperText></FormHelperText>
+      ) : (
+          <FormErrorMessage>{errorMessage}</FormErrorMessage>
+      )}
+    </FormControl>
   );
 }
 
