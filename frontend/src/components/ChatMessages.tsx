@@ -12,7 +12,7 @@ import {
 import { parse } from 'path';
 
 function ChatMessages({ messages }: { messages: string[] }) {
-  const parseString = (input: string): object | null => {
+  const parseString = (input: string) => {
     const regex = /@@(.*?)@@(.*?)@@(.*)/;
     const match = input.match(regex);
 

@@ -20,10 +20,17 @@ function ChatInput({
     return false;
   }
 
+  const chatPlaceholder = (): string => {
+    if (!username && !displayname) {
+      return 'Faça Login antes de enviar uma mensagem';
+    }
+    return 'Digite sua mensagem';
+  };
+
   return (
     <div>
       <Input
-        placeholder='Digite sua mensagem'
+        placeholder={chatPlaceholder()}
         onChange={(e) => setValue(e.target.value)}
         value={value}
         disabled={disableInput()}
