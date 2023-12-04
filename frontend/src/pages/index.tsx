@@ -11,8 +11,7 @@ function Home() {
 
   return (
     <div>
-      <h1>Livechat</h1>
-      <Link href='/chat'>Go to Chat</Link>
+      <span>Carregando...</span>
     </div>
   );
 }
