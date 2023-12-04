@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Input } from '@chakra-ui/react';
 import { Button, ButtonGroup } from '@chakra-ui/react';
+import { useRouter } from 'next/navigation';
 
 function ChatInput({
   username,
@@ -12,6 +13,8 @@ function ChatInput({
   sendMessage: (value: string) => void;
 }) {
   const [value, setValue] = useState('');
+
+    const { push } = useRouter();
 
   const disableInput = (): boolean => {
     if (!username && !displayname) {
@@ -27,6 +30,23 @@ function ChatInput({
     return 'Digite sua mensagem';
   };
 
+  const sendButtonText = () => {
+    if (!username && !displayname) {
+      return 'Fazer Login'
+    }
+    return 'Enviar'
+  };
+
+  const clickButton = () => {
+    if (!username && !displayname) {
+      return push('/login');
+    }
+    if (value !== '') {
+      sendMessage(`@@${username}@@${displayname}@@${value}`);
+      setValue('');
+    }
+  }
+
   return (
     <div>
       <Input
@@ -37,14 +57,9 @@ function ChatInput({
       />
       <Button
         colorScheme='teal'
-        onClick={() => {
-          if (value !== '') {
-            sendMessage(`@@${username}@@${displayname}@@${value}`);
-            setValue('');
-          }
-        }}
+        onClick={() => clickButton()}
       >
-        Enviar
+        {sendButtonText()}
       </Button>
     </div>
   );
