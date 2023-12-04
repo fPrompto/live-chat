@@ -59,7 +59,11 @@ export class UserService {
     }
     return {
       value: true,
-      message: 'Login correto!',
+      message: {
+        email: user.email,
+        username: user.username,
+        displayname: user.displayname,
+      },
     };
   }
 
