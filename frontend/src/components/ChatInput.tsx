@@ -13,23 +13,33 @@ function ChatInput({
 }) {
   const [value, setValue] = useState('');
 
+  const disableInput = (): boolean => {
+    if (!username && !displayname) {
+      return true;
+    }
+    return false;
+  }
+
   return (
-    <>
+    <div>
       <Input
         placeholder='Digite sua mensagem'
         onChange={(e) => setValue(e.target.value)}
         value={value}
+        disabled={disableInput()}
       />
       <Button
         colorScheme='teal'
         onClick={() => {
-          sendMessage(`@@${username}@@${displayname}@@${value}`);
-          setValue('');
+          if (value !== '') {
+            sendMessage(`@@${username}@@${displayname}@@${value}`);
+            setValue('');
+          }
         }}
       >
         Enviar
       </Button>
-    </>
+    </div>
   );
 }
 

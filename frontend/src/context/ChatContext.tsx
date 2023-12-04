@@ -12,8 +12,8 @@ type PropsChatContext = {
 
 export const DEFAULT_VALUE = {
   userData: {
-    username: 'usuarioPadrao',
-    displayname: 'Nome Padrão',
+    username: '',
+    displayname: '',
   },
   setUserData: () => {},
 };

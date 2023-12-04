@@ -56,8 +56,8 @@ function Login() {
     // recurso provisorio para testes
     setUserData(
       {
-        username: emailUser,
-        displayname: 'Login feito',
+        username: response.message.username,
+        displayname: response.message.displayname,
       }
     );
     // recurso provisório
