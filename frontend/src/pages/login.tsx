@@ -1,10 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import axios, { AxiosResponse } from 'axios';
 import { useRouter } from 'next/navigation';
 import validadeNewAccount from '@/utils/validateNewAccount';
 import LoginInput from '@/components/LoginInput';
+import ChatContext from '@/context/ChatContext';
 
 function Login() {
+  const { setUserData } = useContext(ChatContext);
+
   const [emailUser, setEmailUser] = useState('');
   const [password, setPassword] = useState('');
   
@@ -50,6 +53,13 @@ function Login() {
       return alert('Erro no Login');
     }
 
+    // recurso provisorio para testes
+    setUserData(
+      {
+        username: emailUser,
+        displayname: 'Login feito',
+      }
+    );
     // recurso provisório
     return push('/chat');
   };

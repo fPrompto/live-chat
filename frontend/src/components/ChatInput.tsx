@@ -1,15 +1,34 @@
 import { useState } from 'react';
+import { Input } from '@chakra-ui/react';
+import { Button, ButtonGroup } from '@chakra-ui/react';
 
-function ChatInput({ sendMessage }: { sendMessage: (value: string) => void }) {
+function ChatInput({
+  username,
+  displayname,
+  sendMessage,
+}: {
+  username: string;
+  displayname: string;
+  sendMessage: (value: string) => void;
+}) {
   const [value, setValue] = useState('');
+
   return (
     <>
-      <input
+      <Input
+        placeholder='Digite sua mensagem'
         onChange={(e) => setValue(e.target.value)}
-        placeholder='digite sua mensagem'
         value={value}
       />
-      <button onClick={() => sendMessage(value)}>Enviar</button>
+      <Button
+        colorScheme='teal'
+        onClick={() => {
+          sendMessage(`@@${username}@@${displayname}@@${value}`);
+          setValue('');
+        }}
+      >
+        Enviar
+      </Button>
     </>
   );
 }
