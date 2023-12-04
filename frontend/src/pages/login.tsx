@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react';
 import axios, { AxiosResponse } from 'axios';
+import { useRouter } from 'next/navigation';
 import validadeNewAccount from '@/utils/validateNewAccount';
 import LoginInput from '@/components/LoginInput';
 
 function Login() {
   const [emailUser, setEmailUser] = useState('');
   const [password, setPassword] = useState('');
-
+  
   const [newEmail, setNewEmail] = useState('');
   const [newUser, setNewUser] = useState('');
   const [newDisplayname, setNewDisplayname] = useState('');
   const [newPassword, setNewPassword] = useState('');
-
+  
+  const { push } = useRouter();
+  
   useEffect(() => {
     console.log('---------- LOGIN PAGE ----------');
     console.log('email / user:', emailUser);
@@ -22,7 +25,7 @@ function Login() {
     console.log('--------------------------------');
   });
 
-  const postAxios = async (path: string, data: object) => {
+  const postAxios = async (path: string, data: object): Promise<any> => {
     const url = `http://localhost:4000/user/${path}`;
     try {
       const response: AxiosResponse<any> = await axios.post(url, data);
@@ -37,6 +40,20 @@ function Login() {
     }
   };
 
+  const login = async () => {
+    const response = await postAxios('login', {
+      emailUser,
+      password,
+    });
+
+    if (!response.value) {
+      return alert('Erro no Login');
+    }
+
+    // recurso provisório
+    return push('/chat');
+  };
+
   const createNewUser = async () => {
     const vAccount = await validadeNewAccount(newEmail, newUser, newPassword);
 
@@ -46,6 +63,7 @@ function Login() {
       console.log('message:', vAccount.message);
       return;
     }
+
     const response = await postAxios('create', {
       email: newEmail,
       username: newUser,
@@ -55,30 +73,40 @@ function Login() {
 
     console.log('novo cadastro!!');
     console.log('response:', response);
-
-
   };
 
   return (
     <>
       <div>Tela de Login</div>
       <span>Entrar</span>
-      <div />
-      <LoginInput placeholder='Insira seu Email' setLoginValue={setEmailUser} />
+      <br />
+      <LoginInput
+        placeholder='Insira seu Email ou Usuário'
+        setLoginValue={setEmailUser}
+      />
+      <br />
       <LoginInput placeholder='Insira sua Senha' setLoginValue={setPassword} />
+      <br />
+      <button onClick={() => login()}>Entrar</button>
 
-      <div />
+      <br />
+      <br />
       <span>Cadastrar</span>
+      <br />
       <LoginInput placeholder='Insira seu Usuário' setLoginValue={setNewUser} />
+      <br />
       <LoginInput placeholder='Insira seu Email' setLoginValue={setNewEmail} />
+      <br />
       <LoginInput
         placeholder='Insira seu Nome'
         setLoginValue={setNewDisplayname}
       />
+      <br />
       <LoginInput
         placeholder='Insira sua Senha'
         setLoginValue={setNewPassword}
       />
+      <br />
       <button onClick={() => createNewUser()}>Cadastrar</button>
     </>
   );
