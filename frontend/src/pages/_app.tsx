@@ -4,6 +4,7 @@ import ChatProvider from '@/context/ChatProvider';
 
 import '../css/app.css';
 import '../css/login.css';
+import '../css/chat.css';
 
 function MyApp({ Component, pageProps }: { Component: any; pageProps: any }) {
   return (

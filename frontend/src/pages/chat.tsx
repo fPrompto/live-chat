@@ -37,8 +37,7 @@ function Chat() {
   }, []);
 
   return (
-    <div>
-      Chat!!!!
+    <div className='chat-main-div'>
       <ChatMessages messages={messages} />
       <ChatInput
         username={userData.username}

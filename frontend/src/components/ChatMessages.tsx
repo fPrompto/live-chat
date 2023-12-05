@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react';
+
 import {
   Card,
   CardHeader,
@@ -9,7 +11,6 @@ import {
   StackDivider,
   Box,
 } from '@chakra-ui/react';
-import { parse } from 'path';
 
 function ChatMessages({ messages }: { messages: string[] }) {
   const parseString = (input: string) => {
@@ -32,6 +33,17 @@ function ChatMessages({ messages }: { messages: string[] }) {
     }
   };
 
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   return (
     <div>
       <Card>
@@ -39,24 +51,21 @@ function ChatMessages({ messages }: { messages: string[] }) {
           <Heading size='md'>Mensagens</Heading>
         </CardHeader>
 
-        <CardBody>
+        <CardBody className='messages-box'>
           <Stack divider={<StackDivider />} spacing='4'>
             {messages.map((text, i) => {
               const parse = parseString(text);
               const { displayname, username, message } = parse;
               return (
                 <Box key={i}>
-                  <Heading size='sm'>
-                    {`${displayname} - @${
-                      username
-                    }`}
-                  </Heading>
-                  <Text pt='2' fontSize='sm'>
+                  <Heading size='xs'>{`${displayname} @${username}`}</Heading>
+                  <Text pt='2' fontSize='lg'>
                     {message}
                   </Text>
                 </Box>
               );
             })}
+            <div ref={messagesEndRef} />
           </Stack>
         </CardBody>
       </Card>

@@ -47,17 +47,27 @@ function ChatInput({
     }
   }
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      clickButton();
+    }
+  };
+
   return (
-    <div>
-      <Input
-        placeholder={chatPlaceholder()}
-        onChange={(e) => setValue(e.target.value)}
-        value={value}
-        disabled={disableInput()}
-      />
+    <div className='chat-input-div'>
+      <div className='chat-input'>
+        <Input
+          placeholder={chatPlaceholder()}
+          onChange={(e) => setValue(e.target.value)}
+          onKeyDown={(e) => handleKeyPress(e)}
+          value={value}
+          disabled={disableInput()}
+        />
+      </div>
       <Button
         colorScheme='teal'
         onClick={() => clickButton()}
+        className='send-button'
       >
         {sendButtonText()}
       </Button>
