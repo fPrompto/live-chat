@@ -2,6 +2,9 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import ChatProvider from '@/context/ChatProvider';
 
+import '../css/app.css';
+import '../css/login.css';
+
 function MyApp({ Component, pageProps }: { Component: any; pageProps: any }) {
   return (
     <ChatProvider>

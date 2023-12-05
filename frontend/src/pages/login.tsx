@@ -1,17 +1,14 @@
-import { useEffect, useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import axios, { AxiosResponse } from 'axios';
 import { useRouter } from 'next/navigation';
 import validadeNewAccount from '@/utils/validateNewAccount';
 import LoginInput from '@/components/LoginInput';
 import ChatContext from '@/context/ChatContext';
-import {
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
-  Input,
-  Button,
-} from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react';
+import Image from 'next/image';
+
+import liveChatLogo from '../images/livechat_logo.png';
+import { stringify } from 'querystring';
 
 function Login() {
   const { setUserData } = useContext(ChatContext);
@@ -23,6 +20,11 @@ function Login() {
   const [newUser, setNewUser] = useState('');
   const [newDisplayname, setNewDisplayname] = useState('');
   const [newPassword, setNewPassword] = useState('');
+
+  const [loginError, setLoginError] = useState(false);
+  const [registerError, setRegisterError] = useState(false);
+
+  const [isLogin, setIsLogin] = useState(true);
 
   const { push } = useRouter();
 
@@ -51,12 +53,10 @@ function Login() {
       return alert('Erro no Login');
     }
 
-    // recurso provisorio para testes
     setUserData({
       username: response.message.username,
       displayname: response.message.displayname,
     });
-    // recurso provisório
     return push('/chat');
   };
 
@@ -81,11 +81,9 @@ function Login() {
     console.log('response:', response);
   };
 
-  let loginError = false;
-  let registerError = false;
-
-  return (
+  const loginPage = () => (
     <>
+      <h2 className='login-title'>Login</h2>
       <LoginInput
         label='Email ou Usuário'
         errorValue={loginError}
@@ -103,14 +101,26 @@ function Login() {
         setValue={setPassword}
         inputType='password'
       />
-      <Button colorScheme='teal' onClick={() => login()}>
+      <Button
+        colorScheme='teal'
+        onClick={() => login()}
+        className='login-button'
+      >
         Entrar
       </Button>
 
-      <br />
-      <br />
-      <span>Cadastrar</span>
-      <br />
+      <span className='register-text'>
+        Ainda não tem conta?{' '}
+        <a onClick={() => setIsLogin(false)} className='register-button'>
+          Crie agora
+        </a>
+      </span>
+    </>
+  );
+
+  const registerPage = () => (
+    <>
+      <h2 className='login-title'>Crie sua conta</h2>
       <LoginInput
         label='Usuário'
         errorValue={registerError}
@@ -143,10 +153,33 @@ function Login() {
         setValue={setNewPassword}
         inputType='password'
       />
-      <Button colorScheme='teal' onClick={() => createNewUser()}>
+      <Button
+        colorScheme='teal'
+        onClick={() => createNewUser()}
+        className='login-button'
+      >
         Cadastrar
       </Button>
+      <span className='register-text'>
+        Já possui conta?{' '}
+        <a onClick={() => setIsLogin(true)} className='register-button'>
+          Faça Login
+        </a>
+      </span>
     </>
+  );
+
+  return (
+    <div className='main-div'>
+      <Image
+        src={liveChatLogo}
+        alt='Logo do LiveChat'
+        width={400}
+        className='chat-logo'
+      />
+
+      <div className='login-box'>{isLogin ? loginPage() : registerPage()}</div>
+    </div>
   );
 }
 

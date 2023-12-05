@@ -1,0 +1,51 @@
+.main-div {
+  width: 800px;
+}
+
+.chat-logo {
+  display: inline-block;
+  margin-right: 20px;
+  vertical-align: middle;
+}
+
+.login-box {
+  display: inline-block;
+  width: 300px;
+  margin-left: 20px;
+  vertical-align: middle;
+}
+
+.login-title {
+  font-size: 29px;
+  font-weight: bold;
+  margin-top: -17px;
+  margin-bottom: 17px;
+}
+
+.login-button {
+  width: 300px;
+  margin-top: 30px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.register-text {
+  display: flex;
+  margin-top: 30px;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.register-button {
+  margin-left: 5px;
+  color: blue;
+  text-decoration: none;
+  cursor: pointer;
+  transition: text-decoration 0.3s ease;
+}
+
+.register-button:hover {
+  text-decoration: underline;
+}
