@@ -49,7 +49,12 @@ export class UserService {
       };
     }
 
-    const checkPassword = comparePassword(loginData.password, user.password);
+    const checkPassword = await comparePassword(
+      loginData.password,
+      user.password,
+    );
+
+    console.log('checkPassword', checkPassword);
 
     if (!checkPassword) {
       return {
