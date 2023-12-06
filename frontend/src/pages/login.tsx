@@ -6,9 +6,9 @@ import LoginInput from '@/components/LoginInput';
 import ChatContext from '@/context/ChatContext';
 import { Button } from '@chakra-ui/react';
 import Image from 'next/image';
+import Alert from '@/components/Alert';
 
 import liveChatLogo from '../images/livechat_logo.png';
-import { stringify } from 'querystring';
 
 function Login() {
   const { setUserData } = useContext(ChatContext);
@@ -25,6 +25,9 @@ function Login() {
   const [registerError, setRegisterError] = useState(false);
 
   const [isLogin, setIsLogin] = useState(true);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
 
   const { push } = useRouter();
 
@@ -50,7 +53,8 @@ function Login() {
     });
 
     if (!response.value) {
-      return alert('Erro no Login');
+      setAlertMessage(response.message);
+      return setIsOpen(true);
     }
 
     setUserData({
@@ -64,10 +68,9 @@ function Login() {
     const vAccount = await validadeNewAccount(newEmail, newUser, newPassword);
 
     if (!vAccount.value) {
-      // mensagem que sinaliza o problema na criação do usuário
       console.log('erro no cadastro!!!');
       console.log('message:', vAccount.message);
-      return;
+      return setRegisterError(true);
     }
 
     const response = await postAxios('create', {
@@ -87,7 +90,7 @@ function Login() {
       <LoginInput
         label='Email ou Usuário'
         errorValue={loginError}
-        errorMessage='Email ou Usuário necessário'
+        errorMessage=''
         value={emailUser}
         setValue={setEmailUser}
         inputType='email'
@@ -96,7 +99,7 @@ function Login() {
       <LoginInput
         label='Senha'
         errorValue={loginError}
-        errorMessage='Senha necessária'
+        errorMessage=''
         value={password}
         setValue={setPassword}
         inputType='password'
@@ -124,7 +127,7 @@ function Login() {
       <LoginInput
         label='Usuário'
         errorValue={registerError}
-        errorMessage='Usuário necessário'
+        errorMessage=''
         value={newUser}
         setValue={setNewUser}
         inputType='email'
@@ -132,7 +135,7 @@ function Login() {
       <LoginInput
         label='Email'
         errorValue={registerError}
-        errorMessage='Email necessário'
+        errorMessage=''
         value={newEmail}
         setValue={setNewEmail}
         inputType='email'
@@ -140,7 +143,7 @@ function Login() {
       <LoginInput
         label='Nome'
         errorValue={registerError}
-        errorMessage='Nome necessário'
+        errorMessage=''
         value={newDisplayname}
         setValue={setNewDisplayname}
         inputType='email'
@@ -148,7 +151,7 @@ function Login() {
       <LoginInput
         label='Senha'
         errorValue={registerError}
-        errorMessage='Senha necessária'
+        errorMessage=''
         value={newPassword}
         setValue={setNewPassword}
         inputType='password'
@@ -179,6 +182,11 @@ function Login() {
       />
 
       <div className='login-box'>{isLogin ? loginPage() : registerPage()}</div>
+      <Alert
+        message={alertMessage}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+      />
     </div>
   );
 }
