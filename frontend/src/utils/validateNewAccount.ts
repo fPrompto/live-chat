@@ -1,6 +1,8 @@
 import axios, { AxiosResponse } from 'axios';
 import { VerifyLoginI } from '@/interfaces/VerifyLoginI';
 
+import { z, ZodError } from 'zod';
+
 const verifyLoginAxios = async (
   path: string,
   request: object,
@@ -22,79 +24,43 @@ const verifyLoginAxios = async (
   }
 };
 
-const validatePassword = (password: string): boolean => {
-  const passwordLength = password.length;
-
-  if (passwordLength >= 6) {
-    return true;
-  }
-
-  return false;
-};
-
-const validateEmail = (email: string): boolean => {
-  const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const testEmail = regexEmail.test(email);
-
-  if (testEmail) {
-    return true;
-  }
-
-  return false;
-};
-
-const checkIfEmailExists = async (email: string): Promise<boolean> => {
-  const response = await verifyLoginAxios('email', { email });
-  return response.value;
-};
-
-const checkIfUserExists = async (username: string): Promise<boolean> => {
-  const response = await verifyLoginAxios('user', { username });
-  return response.value;
-};
+const NewUserSchema = z.object({
+  email: z.string().email(),
+  username: z.string(),
+  password: z.string().min(6),
+});
 
 const validadeNewAccount = async (
   email: string,
   username: string,
   password: string,
 ): Promise<VerifyLoginI> => {
-  const vEmail = validateEmail(email);
-  const vPassword = validatePassword(password);
-  const checkEmail = checkIfEmailExists(email);
-  const checkUser = checkIfUserExists(username);
+  const user = { email, username, password };
 
-  if (!vEmail) {
+  try {
+    NewUserSchema.parse(user);
+
+    const checkEmail = await verifyLoginAxios('email', { email });
+    if (!checkEmail.value) {
+      console.log('check email', checkEmail);
+      return checkEmail;
+    }
+
+    const checkUsername = await verifyLoginAxios('user', { username });
+    if (!checkUsername.value) {
+      return checkUsername;
+    }
+
+    return {
+      value: true,
+      message: 'Cadastro concluído com sucesso!',
+    };
+  } catch (error) {
     return {
       value: false,
-      message: 'O Email deve estar no formato exemplo@email.com',
+      message: 'Erro na validação dos dados',
     };
   }
-
-  if (!vPassword) {
-    return {
-      value: false,
-      message: 'A Senha deve conter 6 dígitos ou mais',
-    };
-  }
-
-  if (!checkEmail) {
-    return {
-      value: false,
-      message: 'Email já existente, por favor use outro',
-    };
-  }
-
-  if (!checkUser) {
-    return {
-      value: false,
-      message: 'Usuário já existente, por favor use outro',
-    };
-  }
-
-  return {
-    value: true,
-    message: 'Cadastro concluído com sucesso!',
-  };
 };
 
 export default validadeNewAccount;
