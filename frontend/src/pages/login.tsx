@@ -70,6 +70,8 @@ function Login() {
     if (!vAccount.value) {
       console.log('erro no cadastro!!!');
       console.log('message:', vAccount.message);
+      setAlertMessage(vAccount.message);
+      setIsOpen(true);
       return setRegisterError(true);
     }
 
