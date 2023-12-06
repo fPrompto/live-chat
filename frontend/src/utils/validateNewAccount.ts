@@ -58,7 +58,7 @@ const validadeNewAccount = async (
   } catch (error) {
     return {
       value: false,
-      message: 'Erro na validação dos dados',
+      message: 'Erro no cadastro',
     };
   }
 };

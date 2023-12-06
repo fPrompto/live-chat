@@ -22,12 +22,11 @@ function Alert({ message, isOpen, setIsOpen }: {
     <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
       <ModalOverlay />
       <ModalContent>
-        {/* <ModalHeader>{ }</ModalHeader> */}
+        <ModalHeader> </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <span>{message}</span>
         </ModalBody>
-
         <ModalFooter>
           <Button colorScheme='teal' mr={3} onClick={() => setIsOpen(false)}>
             Fechar
