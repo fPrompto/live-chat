@@ -84,6 +84,11 @@ function Login() {
 
     console.log('novo cadastro!!');
     console.log('response:', response);
+    setUserData({
+      username: response.username,
+      displayname: response.displayname,
+    });
+    return push('/chat');
   };
 
   const loginPage = () => (
